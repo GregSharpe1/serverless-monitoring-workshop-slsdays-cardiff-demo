@@ -2,7 +2,7 @@ const fs = require("fs")
 const Mustache = require('mustache')
 const http = require('axios')
 const Log = require('@dazn/lambda-powertools-logger')
-
+const wrap = require('@dazn/lambda-powertools-pattern-basic')
 const restaurantsApiRoot = process.env.restaurants_api
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 const ordersApiRoot = process.env.orders_api
@@ -24,7 +24,7 @@ const getRestaurants = async () => {
   return (await httpReq).data
 }
 
-module.exports.handler = async (event, context) => {
+module.exports.handler = wrap(async (event, context) => {
   const template = loadHtml()
   const restaurants = await getRestaurants()
   Log.debug('retrieved restaurants...', { count: restaurants.login })
@@ -45,4 +45,4 @@ module.exports.handler = async (event, context) => {
   }
 
   return response
-}
+})
