@@ -2,12 +2,13 @@ const AWS = require('aws-sdk')
 const kinesis = new AWS.Kinesis()
 const chance = require('chance').Chance()
 const streamName = process.env.order_events_stream
+const Log = require('@dazn/lambda-powertools-logger')
 
 module.exports.handler = async (event, context) => {
   const restaurantName = JSON.parse(event.body).restaurantName
 
   const orderId = chance.guid()
-  console.log(`placing order ID [${orderId}] to [${restaurantName}]`)
+  Log.debug('placing order...', { orderId, restaurantName})
 
   const data = {
     orderId,
@@ -23,7 +24,7 @@ module.exports.handler = async (event, context) => {
 
   await kinesis.putRecord(req).promise()
 
-  console.log(`published 'order_placed' event into Kinesis`)
+  Log.debug('published event into Kinesis', { eventType: 'order_placed '})
 
   const response = {
     statusCode: 200,

@@ -3,19 +3,23 @@ service: sls-workshop-${self:custom.name}
 plugins:
   - serverless-pseudo-parameters
   - serverless-iam-roles-per-function
-
 custom:
-  name: <INSERT NAME HERE>
-  email: <INSERT EMAIL HERE>
+  name: Greg
+  email: me@gregsharpe.co.uk
   stage: ${opt:stage, self:provider.stage}
   serverless-iam-roles-per-function:
     defaultInherit: true
+  logLevel:
+    prod: INFO
+    default: DEBUG
 
 provider:
   name: aws
   runtime: nodejs12.x
   stage: dev
   region: eu-west-1
+  environment:
+    LOG_LEVEL: ${self:custom.logLevel.${self:custom.stage}, self:custom.logLevel.default}
 
 functions:
   get-index:

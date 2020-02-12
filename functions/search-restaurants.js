@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk')
 const dynamodb = new AWS.DynamoDB.DocumentClient()
-
+const Log = require('@dazn/lambda-powertools-logger')
 const defaultResults = process.env.defaultResults || 8
 const tableName = process.env.restaurants_table
 
@@ -13,6 +13,14 @@ const findRestaurantsByTheme = async (theme, count) => {
   }
 
   const resp = await dynamodb.scan(req).promise()
+
+  Log.debug('found restaurants in DynamoDB', {
+    tableName,
+    limit: count,
+    theme,
+    count: resp.Items.length
+  })
+
   return resp.Items
 }
 

@@ -1,6 +1,7 @@
 const fs = require("fs")
 const Mustache = require('mustache')
 const http = require('axios')
+const Log = require('@dazn/lambda-powertools-logger')
 
 const restaurantsApiRoot = process.env.restaurants_api
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -10,9 +11,9 @@ let html
 
 function loadHtml () {
   if (!html) {
-    console.log('loading index.html...')
+    Log.info('loading index.html...')
     html = fs.readFileSync('static/index.html', 'utf-8')
-    console.log('loaded')
+    Log.info('loaded')
   }
   
   return html
@@ -26,6 +27,7 @@ const getRestaurants = async () => {
 module.exports.handler = async (event, context) => {
   const template = loadHtml()
   const restaurants = await getRestaurants()
+  Log.debug('retrieved restaurants...', { count: restaurants.login })
   const dayOfWeek = days[new Date().getDay()]
   const view = { 
     dayOfWeek, 
