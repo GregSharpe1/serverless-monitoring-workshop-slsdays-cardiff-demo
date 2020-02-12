@@ -3,6 +3,8 @@ service: sls-workshop-${self:custom.name}
 plugins:
   - serverless-pseudo-parameters
   - serverless-iam-roles-per-function
+  - serverless-lumigo
+
 custom:
   name: Greg
   email: me@gregsharpe.co.uk
@@ -12,6 +14,9 @@ custom:
   logLevel:
     prod: INFO
     default: DEBUG
+  lumigo:
+    token: ${env:LUMIGO_TOKEN}
+    nodePackageManager: npm
 
 provider:
   name: aws

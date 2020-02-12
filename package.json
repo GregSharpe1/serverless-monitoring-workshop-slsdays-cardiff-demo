@@ -13,6 +13,7 @@
   "devDependencies": {
     "serverless": "^1.62.0",
     "serverless-iam-roles-per-function": "^2.0.2",
+    "serverless-lumigo": "^1.7.0",
     "serverless-pseudo-parameters": "^2.5.0"
   },
   "dependencies": {
