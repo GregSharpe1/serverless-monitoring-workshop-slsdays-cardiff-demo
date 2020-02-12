@@ -1,6 +1,8 @@
 const _ = require('lodash')
 const { getRecords } = require('../lib/kinesis')
-const AWS = require('aws-sdk')
+const AWSXRay = require('aws-xray-sdk-core')
+const AWS = AWSXRay.captureAWS(require('aws-sdk'))
+
 const kinesis = new AWS.Kinesis()
 const Log = require('@dazn/lambda-powertools-logger')
 const wrap = require('@dazn/lambda-powertools-pattern-basic')
